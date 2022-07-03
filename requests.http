@@ -2,3 +2,32 @@
 
 GET {{endpoint}}/hello/
 ###
+
+GET {{endpoint}}/spaces/
+###
+
+GET {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+###
+
+GET {{endpoint}}/spaces?location=London
+###
+
+POST {{endpoint}}/spaces/
+Content-Type: application/json
+
+{
+  "location": "London",
+  "name": "Best location"
+}
+###
+
+PUT {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+Content-Type: application/json
+
+{
+  "location": "Updated Location"
+}
+###
+
+DELETE {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+###
