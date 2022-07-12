@@ -1,19 +1,20 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import {
-  Code,
-  Function as LambdaFunction,
-  Runtime,
-} from 'aws-cdk-lib/aws-lambda';
-import { LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
+  AuthorizationType,
+  LambdaIntegration,
+  MethodOptions,
+  RestApi,
+} from 'aws-cdk-lib/aws-apigateway';
 import { join } from 'path';
 import { GenericTable } from './GenericTable';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 
 export class SpaceStack extends Stack {
   private api = new RestApi(this, 'SpaceApi');
-
+  private authorizer: AuthorizerWrapper;
   private spacesTable = new GenericTable(this, {
     tableName: 'SpacesTable',
     primaryKey: 'spaceId',
@@ -27,6 +28,8 @@ export class SpaceStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
+    this.authorizer = new AuthorizerWrapper(this, this.api);
+
     const helloLambdaNodejs = new NodejsFunction(this, 'helloLambdaNodejs', {
       entry: join(__dirname, '..', 'services', 'node-lambda', 'hello.ts'),
       handler: 'handler',
@@ -37,10 +40,21 @@ export class SpaceStack extends Stack {
     s3ListPolicy.addResources('*');
     helloLambdaNodejs.addToRolePolicy(s3ListPolicy);
 
+    const optionsWithAuthorizer: MethodOptions = {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: this.authorizer.authorizer.authorizerId,
+      },
+    };
+
     // Hello Api lambda integration
     const helloLambdaIntegration = new LambdaIntegration(helloLambdaNodejs);
     const helloLambdaResource = this.api.root.addResource('hello');
-    helloLambdaResource.addMethod('GET', helloLambdaIntegration);
+    helloLambdaResource.addMethod(
+      'GET',
+      helloLambdaIntegration,
+      optionsWithAuthorizer
+    );
 
     // Spaces API integrations:
     const spaceResource = this.api.root.addResource('spaces');
