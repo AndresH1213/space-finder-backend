@@ -1,5 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { getEventBody } from '../Shared/Utils';
+import { getEventBody, addCorsHeader } from '../Shared/Utils';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -17,6 +17,7 @@ async function handler(
     statusCode: 200,
     body: 'ok',
   };
+  addCorsHeader(result);
   try {
     const requestBody = getEventBody(event);
     const spaceId = event.queryStringParameters?.[PRIMARY_KEY];

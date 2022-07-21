@@ -4,6 +4,7 @@ import {
   APIGatewayProxyResult,
   Context,
 } from 'aws-lambda';
+import { addCorsHeader } from '../Shared/Utils';
 
 const TABLE_NAME = process.env.TABLE_NAME as string;
 const PRIMARY_KEY = process.env.PRIMARY_KEY as string;
@@ -16,6 +17,7 @@ async function handler(
     statusCode: 200,
     body: 'ok',
   };
+  addCorsHeader(result);
   try {
     const spaceId = event.queryStringParameters?.[PRIMARY_KEY];
 

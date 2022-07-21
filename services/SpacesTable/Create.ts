@@ -1,5 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { generateRandomId, getEventBody } from '../Shared/Utils';
+import { generateRandomId, getEventBody, addCorsHeader } from '../Shared/Utils';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -20,6 +20,7 @@ async function handler(
     statusCode: 200,
     body: 'ok',
   };
+  addCorsHeader(result);
 
   try {
     const item = getEventBody(event);
@@ -32,7 +33,9 @@ async function handler(
         Item: item,
       })
       .promise();
-    result.body = `Created item with id: ${item.spaceId}`;
+    result.body = JSON.stringify({
+      id: item.spaceId,
+    });
   } catch (error: any) {
     if (error instanceof MissingFieldError) {
       result.statusCode = 403;
