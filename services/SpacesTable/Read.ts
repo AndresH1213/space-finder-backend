@@ -1,4 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
+import { addCorsHeader } from '../Shared/Utils';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyEventQueryStringParameters,
@@ -18,7 +19,7 @@ async function handler(
     statusCode: 200,
     body: 'ok',
   };
-
+  addCorsHeader(result);
   try {
     console.log(event.queryStringParameters);
     if (
