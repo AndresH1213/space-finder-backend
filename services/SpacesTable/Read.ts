@@ -8,7 +8,7 @@ import {
 } from 'aws-lambda';
 
 const TABLE_NAME = process.env.TABLE_NAME;
-const PRIMARY_KEY = process.env.PRIMARY_KEY;
+const PRIMARY_KEY = process.env.PRIMARY_KEY!;
 const dbClient = new DynamoDB.DocumentClient();
 console.log(process.env.AWS_REGION);
 async function handler(
@@ -21,17 +21,16 @@ async function handler(
   };
   addCorsHeader(result);
   try {
-    console.log(event.queryStringParameters);
     if (
       event.queryStringParameters &&
-      PRIMARY_KEY! in event.queryStringParameters
+      PRIMARY_KEY in event.queryStringParameters
     ) {
       result.body = await queryWithPrimaryPartition(
         event.queryStringParameters
       );
     } else if (
       event.queryStringParameters &&
-      !(PRIMARY_KEY! in event.queryStringParameters)
+      !(PRIMARY_KEY in event.queryStringParameters)
     ) {
       result.body = await queryWithSecondaryPartition(
         event.queryStringParameters
