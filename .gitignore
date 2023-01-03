@@ -1,4 +1,4 @@
 node_modules
 cdk.out
 test/auth/config.ts
-requests.http
+./requests.http
