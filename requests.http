@@ -1,0 +1,35 @@
+@endpoint = https://jwrjec16qb.execute-api.us-east-1.amazonaws.com/prod
+@token = eyJraWQiOiJ2ODVVdHVBQ2U2czNEbG9udnltb1dLT2lSN0ZsSGtcL0RuQkF5ZTJGWm1LMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyZjE2MTIyNi0yNzU4LTQwMDEtOGJjZC0xMjdjMDViM2U1Y2MiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfYlVwWFZHRXZpIiwiY29nbml0bzp1c2VybmFtZSI6ImFuZHJlc2hlcm5hbmRlejIiLCJvcmlnaW5fanRpIjoiNWUwNDU5YTEtMTVkYi00ZTQ3LTg4NzYtMzM0NTBjZTNkNTlkIiwiYXVkIjoiNnJkcGJyZTU5bmo4cDNrN3FzMGU5OWptczUiLCJldmVudF9pZCI6IjA5NDVmNjc4LTg2M2UtNGJiZS1hNGIwLWM4MDQ2ZDA0NTk3MSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjU2OTEwOTE1LCJleHAiOjE2NTY5MTQ1MTUsImlhdCI6MTY1NjkxMDkxNSwianRpIjoiMTJiYzg2ZWYtNmNjMC00OTdkLTlmNjYtNzIxMTk3MTUzNjNiIiwiZW1haWwiOiJhbmRyZXMyQGdtYWlsLmNvbSJ9.b30_ooRQQE8cvjh2D8V4uZbRcOfzp6KhHXgag4Q3EUtpFqFrb0Jur5-FFcJLgHOd7NRsrp6sdx7sPzZVrt9qlBle4Pt4LrhcAV8qyMSqb1hDDNa1f5zQjaG75-xg-bovTazYfQKhkfljvJE28TDeSp05RaugXLVWsB7qcbflcruqNGoAUboS90LYUVgGB7a435Y1oLvviGIkThFzM18HVbGwB2C00rZVJUuNanHkoIXBx0EQXK4yii8_qWkb-0JmGD_IBaM2LxG-DrgxC4eJQ_B7b-afOXBu8jHq97dhggi2oZMQDVQmFNVbL8InrVKFOK4tOLKxWCr2V-b-ap-H5A
+
+GET {{endpoint}}/hello/
+Authorization: {{token}}
+###
+
+GET {{endpoint}}/spaces/
+###
+
+GET {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+###
+
+GET {{endpoint}}/spaces?location=London
+###
+
+POST {{endpoint}}/spaces/
+Content-Type: application/json
+
+{
+  "location": "London",
+  "name": "Best location"
+}
+###
+
+PUT {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+Content-Type: application/json
+
+{
+  "location": "Updated Location"
+}
+###
+
+DELETE {{endpoint}}/spaces?spaceId=57f5acc1-9b29-4623-9655-aa8f0ecfba70
+###
